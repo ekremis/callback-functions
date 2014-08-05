@@ -1,0 +1,42 @@
+// prints out to console
+function logData(arg) {
+    if (typeof arg === "string") console.log(arg);
+    else if (typeof arg === "object") for (var index in arg) {
+        console.log(index + ":" + arg[index]);
+    }
+}
+
+logData("my home is green"); //string
+logData(["orange", "red", "pink"]); //object 
+logData( {
+    name: "Dixie",
+    age: 25
+}); //object
+
+// function with callback function as a parameter
+function getInput(options, callback) {
+    if (typeof callback === "function") callback(options);
+}
+
+//logData is a callback function
+getInput("my home is green", logData);
+getInput(["orange", "red", "pink"], logData);
+getInput({
+    name: "Dixie",
+    age: 25
+}, logData);
+
+
+// Pass parametres to a callback function
+var globalname = "Clinton"; //global variable
+
+function getInput2(options, callback2) {
+    // Pass the global variable globalname to the callback function
+    if (typeof callback2 === "function") {
+        callback2(globalname, options);
+    }
+}
+
+getInput2(globalname, logData);
+// logData(globalname, globalname);
+
