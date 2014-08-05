@@ -1,0 +1,39 @@
+// Define an object with some properties and a method
+// We will later pass the object's method as a callback function to another function
+var clientData = {
+    id: 094545,
+    fullName: "Not Set",
+    // setUserName is a method on the clientData object
+    // 'this' refers to the clientData object
+    setUserName: function (firstName, lastName) {
+        this.fullName = firstName + " " + lastName;
+    }
+}
+
+    function getUserInput(firstname, lastname, callback) {
+        if (typeof firstname === "string" && typeof lastname === "string") {
+            callback(firstname, lastname);
+        }
+    };
+
+// callback function (clientData.setUserName) is passed to a global function, getUserInput is a global function, thus this.fullName is initialized in the global scope (window object)
+// 'this' points to the global window object (in the browser) and not to clientData object
+getUserInput("Dixie", "Tommy", clientData.setUserName);
+console.log(window.fullName); // Dixie Tommy
+console.log(this.fullName); // Dixie Tommy // we are in global scope, thus 'this' refers to the window
+console.log(clientData.fullName); // Not Set (clientData object was not affected)
+clientData.setUserName("Is", "Set");
+console.log(clientData.fullName); // Is Set
+
+//When we call clientData.setUserName() in global scope we want to apply it into the clientData object and not into the Window.object
+//We achieve this with the use of APPLY() method
+function getUserInput2(firstname, lastname, callback, callbackObj) {
+    if (typeof firstname === "string" && typeof lastname === "string") {
+ //       callback.apply(callbackObj, [firstname, lastname]); //now the 'this' will point to the callbackObj and NOT in the window object!
+        callback.call(callbackObj, firstname, lastname); //The only difference is that call() takes the function arguments separately, and apply() takes the function arguments in an array.
+    }
+}
+
+getUserInput2("Laura", "Gross", clientData.setUserName, clientData);
+console.log(clientData.fullName); // Laura Gross
+console.log(this.fullName); // Dixie Tommy (global scope = window.fullname)
