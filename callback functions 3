@@ -1,0 +1,36 @@
+// First, setup the generic poem creator function; it will be the callback function in the getUserInput function below.
+function genericPoemMaker(name, gender) {
+    console.log(name + " is finer than fine wine.");
+    console.log("A " + gender + " of unfortunate tragedies who still manages a perpetual smile");
+}
+
+function greetUser(name, gender) {
+    console.log("hello user " + name + " with gender: " + gender);
+}
+
+greetUser("mak", "male");
+
+function greetUser2(customerName, sex) {
+    var salutation = sex && (sex === "Man") ? "Mr." : "Ms.";
+    // Condition Operator '?:' --> if the condition (sex === "Man") is TRUE then return "Mr." or else (:) return "Ms."
+    console.log("Hello, " + salutation + " " + customerName);
+}
+
+greetUser2("lina", "girl");
+
+//The callback, which is the last item in the parameter, will be our genericPoemMaker function we defined above.
+function getUserInput(firstName, lastName, gender, callback) {
+    var fullName = firstName + " " + lastName;
+    // Make sure the callback is a function
+    if (typeof callback === "function") {
+        // Execute the callback function and pass the parameters to it
+        callback(fullName, gender);
+    }
+}
+
+getUserInput("Johnny","Cash","CashGender",genericPoemMaker);
+
+getUserInput("Dixie","Tommy","MAle",greetUser);
+
+// Pass the greetUser2 function as a callback to getUserInput
+getUserInput("Bill", "Gates", "Man", greetUser2);
